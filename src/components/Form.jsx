@@ -1,37 +1,56 @@
 import React , { useState } from 'react'
 
+const initialUserInput = {
+    'current-savings': 10000, 
+    'yearly-contribution': 1200, 
+    'expected-return': 7, 
+    duration:10, 
+}
+
+
 export default function Form() {
 
-    const [currentSavings, setCurrentSavings] = useState(0); // for Current Savings  
-    const [yearlySavings, setYearlySavings] = useState(0); // for Yearly Savings  
-    // const [] = useState(''); // for savings  
-    // const [] = useState(''); // for savings  
+    const [userInput, setUserinput] = useState({
+        'current-savings': 10000, 
+        'yearly-contribution': 1200, 
+        'expected-return': 7, 
+        duration:10, 
+    })
 
-    const submitHandler = ()=>{
-        console.log("Submitted")
-    }
-
-    const handleSetCurrentSavings = (event)=>{
+    const submitHandler = (event)=>{
         event.preventDefault(); 
-        setCurrentSavings(event.target.value);  
+        // ...
+        console.log("Submit");
     }
 
-    const handleSetYearlySavings = (event)=>{
-        event.preventDefault();
-        setYearlySavings(event.target.value); 
+
+    const resetHandler = ()=>{
+        setUserinput(initialUserInput)
     }
 
+    const inputChangeHandler = (input, value)=>{
+        setUserinput((prevInput)=>{
+            return{
+                ...prevInput, 
+                [input]: value, 
+            }; 
+        });
+    };
 
     return (
         <form className="form" onSubmit={submitHandler}>
             <div className="input-group">
                 <p>
                     <label htmlFor="current-savings">Current($)</label>
-                    <input type="number" id="current-savings" onChange={handleSetCurrentSavings}/>
+                    <input onChange = {(event)=>inputChangeHandler('current-savings', event.target.value)}
+                    value={userInput['current-savings']}
+                    type="number" id="current-savings"/>
                 </p>
                 <p>
                     <label htmlFor="yearly-contribution">Yearly Savings ($)</label>
-                    <input type="number" id="yearly-contribution" onChange={handleSetYearlySavings}/>
+                    <input onChange = {(event)=>inputChangeHandler('yearly-contribution',event.target.value) }
+                    value={userInput['yearly-contribution']}
+                    type="number" id="yearly-contribution" />
                 </p>
             </div>
             <div className="input-group">
@@ -39,15 +58,19 @@ export default function Form() {
                     <label htmlFor="expected-return">
                         Expected Interest (%, per year)
                     </label>
-                    <input type="number" id="expected-return" />
+                    <input onChange = {(event)=>inputChangeHandler('expected-return', event.target.value)}
+                    value={userInput['expected-return']}
+                    type="number" id="expected-return" />
                 </p>
                 <p>
                     <label htmlFor="duration">Investment Duration (years)</label>
-                    <input type="number" id="duration" />
+                    <input onChange = {(event)=>inputChangeHandler('duration',event.target.value)} 
+                    value={userInput['duration']}
+                    type="number" id="duration" />
                 </p>
             </div>
             <p className="actions">
-                <button type="reset" className="buttonAlt">
+                <button type="reset" className="buttonAlt"  onClick = {resetHandler}>
                     Reset
                 </button>
                 <button type="submit" className="button" >
